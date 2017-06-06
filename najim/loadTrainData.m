@@ -1,10 +1,12 @@
+% Read Y values (diagnosys numbers) and X values (haemochromocytometric data)
 fid = fopen('training.dat', 'rt');
 rawtraindata = textscan(fid, '%*f %*f %*f %*f %f %f %f %f %*f %f %*f %*f %*f %f');
-trainY = rawtraindata{6};
+trainY(1,:) = rawtraindata{6};
 for n = 1:5
-  trainX(:,n) = rawtraindata{n};  
+  trainX(n,:) = rawtraindata{n};  
 end
 fclose(fid);
+save('train.mat', 'trainX', 'trainY');
 % Write X and Y values to .txt files
 fileID = fopen('train.Y','w');
 fprintf(fileID, '%d\r\n', trainY);

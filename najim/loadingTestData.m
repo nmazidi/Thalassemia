@@ -1,11 +1,12 @@
 % Read Y values (diagnosys numbers) and X values (haemochromocytometric data)
 fid = fopen('test.dat', 'rt');
 rawtestdata = textscan(fid, '%*f %*f %*f %*f %f %f %f %f %*f %f %*f %*f %*f %f');
-testY = rawtestdata{6};
+testY(1,:) = rawtestdata{6};
 for n = 1:5
-  testX(:,n) = rawtestdata{n};  
+  testX(n,:) = rawtestdata{n};  
 end
 fclose(fid);
+save('test.mat', 'testX', 'testY');
 % Write X and Y values to .txt files
 fileID = fopen('test.Y','w');
 fprintf(fileID, '%d\r\n', testY);

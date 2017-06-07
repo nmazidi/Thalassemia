@@ -6,16 +6,16 @@ testX = test.testX;
 testY = test.testY;
 
 % newrb(P,T,goal,spread,MN,DF) takes two of these arguments,
-% P = R-by-Q matrix of Q input vectors
-% T = S-by-Q matrix of Q target class vectors
-% goal = Mean squared error goal (default = 0.0)
-% spread	= Spread of radial basis functions (default = 1.0)
-% MN	= Maximum number of neurons (default is Q)
-% DF	= Number of neurons to add between displays (default = 25)
+% P      = R-by-Q matrix of Q input vectors
+% T      = S-by-Q matrix of Q target class vectors
+% goal   = Mean squared error goal (default = 0.0)
+% spread = Spread of radial basis functions (default = 1.0)
+% MN	 = Maximum number of neurons (default is Q)
+% DF	 = Number of neurons to add between displays (default = 25)
 
-spread = 25;
+spread = 42.5;
 goal = 0.01;
-MN = 14;
+MN = 6;
 DF = 5;
 
 net = newrb(trainX,trainY,goal,spread,MN,DF);
@@ -24,8 +24,8 @@ a = sim(net,testX);
 thr = 0;
 for d = 1:1000
    thr = thr + 0.01;
-   result = threshold_rbf(a,108,thr);
-   [sen(d),spe(d)] = result_class(result, testY, 108);
+   result = threshold_rbf(a,99,thr);
+   [sen(d),spe(d)] = result_class(result, testY, 99);
 end
 
 falsePos(1) = 0;

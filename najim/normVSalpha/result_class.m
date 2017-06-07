@@ -21,4 +21,3 @@ for n = 1:numOfSamples
 end 
     sen = res_pos/ num_pos;
     spe = res_neg/ num_neg;
-    %end

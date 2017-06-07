@@ -2,6 +2,11 @@
 fid = fopen('test.dat', 'rt');
 rawtestdata = textscan(fid, '%*f %*f %*f %*f %f %f %f %f %*f %f %*f %*f %*f %f');
 testY(1,:) = rawtestdata{6};
+for n = 1:108 
+   if testY(1,n) ~= 2;
+   testY(1,n) = 1; 
+   end 
+end
 for n = 1:5
   testX(n,:) = rawtestdata{n};  
 end

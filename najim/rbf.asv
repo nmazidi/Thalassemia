@@ -18,10 +18,11 @@ goal = 0.01;
 MN = 14;
 DF = 5;
 
-net = newrb(trainX,trainY,goal,spread,MN,DF);
+net = newrb(tets,trainY,goal,spread,MN,DF);
 a = sim(net,testX);
 
 thr = 0;
+
 for d = 1:1000
    thr = thr + 0.01;
    result = threshold_rbf(a,108,thr);

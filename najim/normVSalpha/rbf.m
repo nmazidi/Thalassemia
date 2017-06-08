@@ -13,9 +13,9 @@ testY = test.testY;
 % MN	 = Maximum number of neurons (default is Q)
 % DF	 = Number of neurons to add between displays (default = 25)
 
-spread = 42.5;
+spread = 40;
 goal = 0.01;
-MN = 6;
+MN = 20;
 DF = 5;
 
 net = newrb(trainX,trainY,goal,spread,MN,DF);

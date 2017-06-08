@@ -21,6 +21,22 @@ DF = 5;
 net = newrb(trainX,trainY,goal,spread,MN,DF);
 a = sim(net,testX);
 
+thr = 1;
+best_thr = 0;
+numOfCorrectDiagnoses = 0;
+for n = 1:100
+    thr = thr + 0.01;
+    temp = diagnose(a,size(testX,2),thr);
+    num = checkDiagnosis(temp, testY);
+    if num > numOfCorrectDiagnoses 
+       numOfCorrectDiagnoses = num;
+       best_thr = thr;
+    end
+end
+display(best_thr);
+display(numOfCorrectDiagnoses);
+diagnosis = diagnose(a,size(testX,2), best_thr);
+
 thr = 0;
 for d = 1:1000
    thr = thr + 0.01;
@@ -50,6 +66,8 @@ title('ROC RBF');
 axis([0 1 0 1]);
 grid ON;
 
-file_ris= [spe',sen'];
+roc_result= [spe',sen'];
+save roc_result.dat roc_result -ASCII -TABS;
 
-save rbf_ris.dat file_ris -ASCII -TABS;
+output_res = [a',diagnosis',testY'];
+save rbf_output.dat output_res -ASCII -TABS;

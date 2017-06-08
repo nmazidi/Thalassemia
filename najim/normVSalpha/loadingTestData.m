@@ -1,13 +1,13 @@
 % Read Y values (diagnosys numbers) and X values (haemochromocytometric data)
 fid = fopen('test.dat', 'rt');
-rawtestdata = textscan(fid, '%*f %*f %*f %*f %f %f %f %f %*f %f %*f %*f %*f %f');
-testY(1,:) = rawtestdata{6};
+rawtestdata = textscan(fid, '%*f %*f %*f %*f %f %f %f %f %*f %*f %*f %*f %*f %f');
+testY(1,:) = rawtestdata{5};
 for n = 1:99 
    if testY(1,n) ~= 1;
    testY(1,n) = 2; 
    end 
 end
-for n = 1:5
+for n = 1:4
   testX(n,:) = rawtestdata{n};  
 end
 fclose(fid);

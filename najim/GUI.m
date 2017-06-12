@@ -75,7 +75,56 @@ varargout{1} = handles.output;
 
 % --- Executes on button press in btnDiagnose.
 function btnDiagnose_Callback(hObject, eventdata, handles)
+rbc = str2double(get(handles.txtRBC, 'String'));
+hb = str2double(get(handles.txtHb, 'String'));
+ht = str2double(get(handles.txtHt, 'String'));
+mcv = str2double(get(handles.txtMCV, 'String'));
+hba2 = str2double(get(handles.txtHbA2, 'String'));
 
+isBeta = false;
+isNormal = false;
+isAlpha = false;
+
+X(1,:) = rbc;
+X(2,:) = hb;
+X(3,:) = ht;
+X(4,:) = mcv;
+X(5,:) = hba2;
+
+save('diagnose.mat', 'X');
+run('diagnosis\betaVS(norm,alpha)2c5f\rbf.m');
+fid = fopen('diagnosis\betaVS(norm,alpha)2c5f\rbf_output.dat', 'rt');
+betaOutput = textscan(fid, '%f %f %f');
+betaResult = betaOutput{2};
+rbfOutput = betaOutput{1};
+threshold = betaOutput{3};
+fclose(fid);
+if betaResult == 2
+    isBeta = true;
+else
+    run('diagnosis\normVSalpha\rbf.m');
+    fid = fopen('diagnosis\normVSalpha\rbf_output.dat', 'rt');
+    alphaNormOutput = textscan(fid, '%f %f %f');
+    alphaNormResult = alphaNormOutput{2};
+    rbfOutput = alphaNormOutput{1};
+    threshold = alphaNormOutput{3};
+    fclose(fid);
+    if alphaNormResult == 1
+        isNormal = true;
+    else
+        isAlpha = true;
+    end
+end
+
+if isNormal == true
+    set(handles.txtDiagnosis, 'String', 'Normal patient');
+elseif isBeta == true
+    set(handles.txtDiagnosis, 'String', 'beta-thalassaemia carrier');
+else 
+    set(handles.txtDiagnosis, 'String', 'alpha-thalassaemia carrier');
+end
+set(handles.txtRBF, 'String', rbfOutput);
+set(handles.txtThreshold, 'String', threshold);
 
 % --- Executes on button press in btnSave.
 function btnSave_Callback(hObject, eventdata, handles)

@@ -1,35 +1,35 @@
-function varargout = GUI(varargin)
-% GUI MATLAB code for GUI.fig
-%      GUI, by itself, creates a new GUI or raises the existing
+function varargout = SaveGUI(varargin)
+% SAVEGUI MATLAB code for SaveGUI.fig
+%      SAVEGUI, by itself, creates a new SAVEGUI or raises the existing
 %      singleton*.
 %
-%      H = GUI returns the handle to a new GUI or the handle to
+%      H = SAVEGUI returns the handle to a new SAVEGUI or the handle to
 %      the existing singleton*.
 %
-%      GUI('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in GUI.M with the given input arguments.
+%      SAVEGUI('CALLBACK',hObject,eventData,handles,...) calls the local
+%      function named CALLBACK in SAVEGUI.M with the given input arguments.
 %
-%      GUI('Property','Value',...) creates a new GUI or raises the
+%      SAVEGUI('Property','Value',...) creates a new SAVEGUI or raises the
 %      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before GUI_OpeningFcn gets called.  An
+%      applied to the GUI before SaveGUI_OpeningFcn gets called.  An
 %      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to GUI_OpeningFcn via varargin.
+%      stop.  All inputs are passed to SaveGUI_OpeningFcn via varargin.
 %
 %      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
 %      instance to run (singleton)".
 %
 % See also: GUIDE, GUIDATA, GUIHANDLES
 
-% Edit the above text to modify the response to help GUI
+% Edit the above text to modify the response to help SaveGUI
 
-% Last Modified by GUIDE v2.5 12-Jun-2017 16:06:26
+% Last Modified by GUIDE v2.5 12-Jun-2017 15:41:56
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
 gui_State = struct('gui_Name',       mfilename, ...
                    'gui_Singleton',  gui_Singleton, ...
-                   'gui_OpeningFcn', @GUI_OpeningFcn, ...
-                   'gui_OutputFcn',  @GUI_OutputFcn, ...
+                   'gui_OpeningFcn', @SaveGUI_OpeningFcn, ...
+                   'gui_OutputFcn',  @SaveGUI_OutputFcn, ...
                    'gui_LayoutFcn',  [] , ...
                    'gui_Callback',   []);
 if nargin && ischar(varargin{1})
@@ -44,26 +44,32 @@ end
 % End initialization code - DO NOT EDIT
 
 
-% --- Executes just before GUI is made visible.
-function GUI_OpeningFcn(hObject, eventdata, handles, varargin)
+% --- Executes just before SaveGUI is made visible.
+function SaveGUI_OpeningFcn(hObject, eventdata, handles, varargin)
 % This function has no output args, see OutputFcn.
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-% varargin   command line arguments to GUI (see VARARGIN)
+% varargin   command line arguments to SaveGUI (see VARARGIN)
 
-% Choose default command line output for GUI
+% Choose default command line output for SaveGUI
 handles.output = hObject;
 
 % Update handles structure
 guidata(hObject, handles);
 
-% UIWAIT makes GUI wait for user response (see UIRESUME)
-% uiwait(handles.gui1);
+% UIWAIT makes SaveGUI wait for user response (see UIRESUME)
+% uiwait(handles.figure1);
 
+set(handles.txtRBC,'String',getappdata(0,'rbc'));
+set(handles.txtHb,'String',getappdata(0,'hb'));
+set(handles.txtHt,'String',getappdata(0,'ht'));
+set(handles.txtMCV,'String',getappdata(0,'mcv'));
+set(handles.txtHbA2,'String',getappdata(0,'hba2'));
+set(handles.txtDiagnosis,'String',getappdata(0,'cad'));
 
 % --- Outputs from this function are returned to the command line.
-function varargout = GUI_OutputFcn(hObject, eventdata, handles) 
+function varargout = SaveGUI_OutputFcn(hObject, eventdata, handles) 
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -72,78 +78,16 @@ function varargout = GUI_OutputFcn(hObject, eventdata, handles)
 % Get default command line output from handles structure
 varargout{1} = handles.output;
 
-
-% --- Executes on button press in btnDiagnose.
-function btnDiagnose_Callback(hObject, eventdata, handles)
+% --- Executes on button press in btnSave.
+function btnSave_Callback(hObject, eventdata, handles)
 rbc = str2double(get(handles.txtRBC, 'String'));
 hb = str2double(get(handles.txtHb, 'String'));
 ht = str2double(get(handles.txtHt, 'String'));
 mcv = str2double(get(handles.txtMCV, 'String'));
 hba2 = str2double(get(handles.txtHbA2, 'String'));
-
-isBeta = false;
-isNormal = false;
-isAlpha = false;
-
-X(1,:) = rbc;
-X(2,:) = hb;
-X(3,:) = ht;
-X(4,:) = mcv;
-X(5,:) = hba2;
-
-save('diagnose.mat', 'X');
-run('diagnosis\betaVS(norm,alpha)2c5f\rbf.m');
-fid = fopen('diagnosis\betaVS(norm,alpha)2c5f\rbf_output.dat', 'rt');
-betaOutput = textscan(fid, '%f %f %f');
-betaResult = betaOutput{2};
-rbfOutput = betaOutput{1};
-threshold = betaOutput{3};
-fclose(fid);
-if betaResult == 2
-    isBeta = true;
-else
-    run('diagnosis\normVSalpha\rbf.m');
-    fid = fopen('diagnosis\normVSalpha\rbf_output.dat', 'rt');
-    alphaNormOutput = textscan(fid, '%f %f %f');
-    alphaNormResult = alphaNormOutput{2};
-    rbfOutput = alphaNormOutput{1};
-    threshold = alphaNormOutput{3};
-    fclose(fid);
-    if alphaNormResult == 1
-        isNormal = true;
-    else
-        isAlpha = true;
-    end
-end
-
-if isNormal == true
-    set(handles.txtDiagnosis, 'String', 'Normal patient');
-elseif isBeta == true
-    set(handles.txtDiagnosis, 'String', 'beta-thalassaemia carrier');
-else 
-    set(handles.txtDiagnosis, 'String', 'alpha-thalassaemia carrier');
-end
-set(handles.txtRBF, 'String', rbfOutput);
-set(handles.txtThreshold, 'String', threshold);
-setappdata(0,'rbc',rbc);
-setappdata(0,'hb',hb);
-setappdata(0,'ht',ht);
-setappdata(0,'mcv',mcv);
-setappdata(0,'hba2',hba2);
-setappdata(0,'cad',get(handles.txtDiagnosis, 'String'));
-set(handles.btnSave,'Enable','on');
-
-% --- Executes on button press in btnSave.
-function btnSave_Callback(hObject, eventdata, handles)
-run('SaveGUI.m');
-
-
-% --- Executes on button press in btnDatabase.
-function btnDatabase_Callback(hObject, eventdata, handles)
-% hObject    handle to btnDatabase (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
+cad = get(handles.txtDiagnosis, 'String');
+patid = get(handles.txtDiagnosis, 'String');
+diag = get(handles.txtChoose, 'String');
 
 
 function txtRBC_Callback(hObject, eventdata, handles)
@@ -192,18 +136,18 @@ end
 
 
 
-function txtHbA2_Callback(hObject, eventdata, handles)
-% hObject    handle to txtHbA2 (see GCBO)
+function txtHt_Callback(hObject, eventdata, handles)
+% hObject    handle to txtHt (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of txtHbA2 as text
-%        str2double(get(hObject,'String')) returns contents of txtHbA2 as a double
+% Hints: get(hObject,'String') returns contents of txtHt as text
+%        str2double(get(hObject,'String')) returns contents of txtHt as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function txtHbA2_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to txtHbA2 (see GCBO)
+function txtHt_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to txtHt (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -238,18 +182,18 @@ end
 
 
 
-function txtHt_Callback(hObject, eventdata, handles)
-% hObject    handle to txtHt (see GCBO)
+function txtHbA2_Callback(hObject, eventdata, handles)
+% hObject    handle to txtHbA2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of txtHt as text
-%        str2double(get(hObject,'String')) returns contents of txtHt as a double
+% Hints: get(hObject,'String') returns contents of txtHbA2 as text
+%        str2double(get(hObject,'String')) returns contents of txtHbA2 as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function txtHt_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to txtHt (see GCBO)
+function txtHbA2_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to txtHbA2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -283,18 +227,19 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-function txtRBF_Callback(hObject, eventdata, handles)
-% hObject    handle to txtRBF (see GCBO)
+
+function txtID_Callback(hObject, eventdata, handles)
+% hObject    handle to txtID (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of txtRBF as text
-%        str2double(get(hObject,'String')) returns contents of txtRBF as a double
+% Hints: get(hObject,'String') returns contents of txtID as text
+%        str2double(get(hObject,'String')) returns contents of txtID as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function txtRBF_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to txtRBF (see GCBO)
+function txtID_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to txtID (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -306,18 +251,18 @@ end
 
 
 
-function txtThreshold_Callback(hObject, eventdata, handles)
-% hObject    handle to txtThreshold (see GCBO)
+function txtChoose_Callback(hObject, eventdata, handles)
+% hObject    handle to txtChoose (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of txtThreshold as text
-%        str2double(get(hObject,'String')) returns contents of txtThreshold as a double
+% Hints: get(hObject,'String') returns contents of txtChoose as text
+%        str2double(get(hObject,'String')) returns contents of txtChoose as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function txtThreshold_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to txtThreshold (see GCBO)
+function txtChoose_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to txtChoose (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 

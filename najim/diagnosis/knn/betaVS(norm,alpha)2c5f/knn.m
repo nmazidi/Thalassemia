@@ -5,4 +5,7 @@ trainY = train.y;
 testX = test.testX;
 testY = test.testY;
 
-svmStruct = svmtrain(trainX,trainY, 'ShowPlot',true);
+mdl = fitcknn(trainX,trainY,'NumNeighbors',23,'Standardize',1);
+xnew = [6,5];
+label = predict(mdl,xnew);
+display(label);

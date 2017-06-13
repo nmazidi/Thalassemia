@@ -80,15 +80,34 @@ varargout{1} = handles.output;
 
 % --- Executes on button press in btnSave.
 function btnSave_Callback(hObject, eventdata, handles)
+id = str2double(get(handles.txtID, 'String'));
 rbc = str2double(get(handles.txtRBC, 'String'));
 hb = str2double(get(handles.txtHb, 'String'));
 ht = str2double(get(handles.txtHt, 'String'));
 mcv = str2double(get(handles.txtMCV, 'String'));
 hba2 = str2double(get(handles.txtHbA2, 'String'));
 cad = get(handles.txtDiagnosis, 'String');
-patid = get(handles.txtDiagnosis, 'String');
+if strcmp(cad,'Normal patient')
+    cadnum = 1;
+elseif strcmp(cad,'beta-thalassaemia carrier')
+    cadnum = 2;
+else 
+    cadnum = 3;
+end
 diag = get(handles.txtChoose, 'String');
 
+record(1,1) = id;
+record(1,2) = rbc;
+record(1,3) = hb;
+record(1,4) = ht;
+record(1,5) = mcv;
+record(1,6) = hba2;
+record(1,7) = cadnum;
+
+filename = 'records.xlsx';
+temp = xlsread(filename);
+temp = [temp; record];
+xlswrite(filename,temp);
 
 function txtRBC_Callback(hObject, eventdata, handles)
 % hObject    handle to txtRBC (see GCBO)

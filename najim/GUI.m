@@ -140,10 +140,7 @@ run('SaveGUI.m');
 
 % --- Executes on button press in btnDatabase.
 function btnDatabase_Callback(hObject, eventdata, handles)
-% hObject    handle to btnDatabase (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
+run('dataGUI');
 
 
 function txtRBC_Callback(hObject, eventdata, handles)

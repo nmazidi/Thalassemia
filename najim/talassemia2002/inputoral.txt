@@ -1,0 +1,5 @@
+2
+2
+108
+c:\windows\desktop\lavoro\oracoloMLP.txt
+c:\windows\desktop\lavoro\oracoloSVM.txt

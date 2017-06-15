@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0042)http://vassun.vassar.edu/~lowry/prop1.html -->
+<HTML><HEAD><TITLE>Confidence Interval of a Proportion</TITLE>
+<META content="text/html; charset=windows-1252" http-equiv=Content-Type>
+<SCRIPT language=JavaScript>
+document.linkColor="010785";
+document.vlinkColor="010785";
+
+var n=0, r=0, p=0, q=0, l95a=0, u95a=0, l95b=0, u95b=0, num=0, denom=0;
+
+var z = 1.95996;
+var zsq = z*z;
+
+function calc()
+{
+n = 1*document.n.elements[0].value;
+r = 1*document.r.elements[0].value;
+if(n<r) {
+alert("r cannot be greater than n.")
+}
+if(Math.floor(r)<r) {alert("r must be an integer value.")};
+if(Math.floor(n)<n) {alert("n must be an integer value.")};
+
+
+
+p = r/n;
+Math.round((r/n)*10000)/10000;
+document.p.elements[0].value = Math.round(p*10000)/10000;
+q = 1-p;
+
+<!--begin l95a-->
+num = (2*n*p)+zsq-(z*Math.sqrt(zsq+(4*n*p*q)));
+denom = 2*(n+zsq);
+l95a = num/denom;
+if(p==0) {l95a = 0};
+document.l95a.elements[0].value = Math.round(l95a*10000)/10000;
+<!--end l95a-->
+
+<!--begin u95a-->
+num = (2*n*p)+zsq+(z*Math.sqrt(zsq+(4*n*p*q)));
+denom = 2*(n+zsq);
+u95a = num/denom;
+if(p==1) {u95a = 1};
+document.u95a.elements[0].value = Math.round(u95a*10000)/10000;
+<!--end u95a-->
+
+<!--begin l95b-->
+num = (2*n*p)+zsq-1-(z*Math.sqrt(zsq-2-(1/n)+4*p*((n*q)+1)));
+denom = 2*(n+zsq);
+l95b = num/denom;
+if(p==0) {l95b = 0};
+document.l95b.elements[0].value = Math.round(l95b*10000)/10000;
+<!--end l95b-->
+
+<!--begin u95b-->
+num = (2*n*p)+zsq+1+(z*Math.sqrt(zsq+2-(1/n)+4*p*((n*q)-1)));
+denom = 2*(n+zsq);
+u95b = num/denom;
+if(p==1) {u95b = 1};
+document.u95b.elements[0].value = Math.round(u95b*10000)/10000;
+<!--end u95b-->
+}<!--end function calc-->
+
+function wipe()
+{
+document.n.elements[0].value = "";
+document.r.elements[0].value = "";
+document.p.elements[0].value =  "--------";
+document.l95a.elements[0].value =  value="--------";
+document.u95a.elements[0].value =  value="--------";
+document.l95b.elements[0].value =  value="--------";
+document.u95b.elements[0].value =  value="--------";
+}<!--end function wipe-->
+
+</SCRIPT>
+
+<META content="MSHTML 5.00.2920.0" name=GENERATOR></HEAD>
+<BODY bgColor=#ffffff vlinkColor="010785" linkColor="010785"><FONT 
+face="verdana, arial"><IMG height=15 
+src="ConfidenceInterval_file/small_logo.gif" width=92>
+<P><B><FONT color=#010785>The Confidence Interval of a Proportion<BR></FONT></B>
+<HR>
+This page will calculate the lower and upper limits of the 95% confidence 
+interval for a proportion, according to two methods described by Robert 
+Newcombe, both derived from a procedure outlined by E.&nbsp;B.&nbsp;Wilson in 
+1927 (references below). The first method uses the Wilson procedure without a 
+correction for continuity; the second uses the Wilson procedure with a 
+correction for continuity.<BR><BR>For the notation used here, n&nbsp;=&nbsp;the 
+total number of observations and k&nbsp;=&nbsp;the number of those&nbsp;n 
+observations that are of particular interest. Thus, if one observes 23 
+recoveries among 60 patients, n&nbsp;=&nbsp;60, k&nbsp;=&nbsp;23, and the 
+proportion is 23/60&nbsp;=&nbsp;0.3833.<BR><BR>To calculate the lower and upper 
+limits of the confidence interval for a proportion of this sort, enter the 
+values of k and&nbsp;n in the designated places, then click the "Calculate" 
+button.
+<HR>
+ 
+<TABLE bgColor=#ffffff border=0 borderColor=white cellPadding=4 cellSpacing=1>
+  <TBODY>
+  <TR>
+    <TD bgColor=#cccccc>
+      <FORM name=r><FONT face="verdana, arial"><FONT color=#010785><B>k = 
+      </B></FONT><INPUT size=8> </FONT>
+    <TD align=middle bgColor=#cccccc noWrap rowSpan=2 
+      vAlign=center></FORM><FONT face="verdana, arial"></FORM>
+      <FORM name=p>&nbsp;&nbsp;<FONT color=#010785><B>Proportion = 
+      </B></FONT><INPUT size=8 value=--------> </FONT>
+  <TR>
+    <TD bgColor=#cccccc></FORM><FONT face="verdana, arial">
+      <FORM name=n><FONT color=#010785><B>n = </B></FONT><INPUT size=8> </FONT>
+  <TR>
+    <TD align=right bgColor=#010785 colSpan=2><FORM><INPUT name=reset onclick=wipe() type=button value=Reset>&nbsp;&nbsp;&nbsp;<INPUT name=Calculate onclick=calc() type=button value=Calculate> 
+  </TR></TBODY></TABLE></FORM>
+<TABLE bgColor=#ffffff border=0 borderColor=white cellPadding=2 cellSpacing=1>
+  <TBODY>
+  <TR align=left>
+    <TD colSpan=2><FONT face="verdana, arial"><FONT color=#010785><B>95% 
+      confidence interval: no continuity correction</B></FONT> </FONT>
+  <TR align=middle>
+    <TD bgColor=#cccccc noWrap>
+      <FORM name=l95a><FONT face="verdana, arial"><FONT color=#010785><B>Lower 
+      limit = </B></FONT><INPUT size=8 value=--------> </FONT>
+    <TD bgColor=#cccccc noWrap></FORM>
+      <FORM name=u95a><FONT face="verdana, arial"><FONT color=#010785><B>Upper 
+      limit = </B></FONT><INPUT size=8 value=--------> </FONT>
+  <TR>
+    <TD>
+  <TR>
+    <TD colSpan=2></FORM><FONT face="verdana, arial"><FONT 
+      color=#010785><B>95% confidence interval: including continuity 
+      correction</B></FONT> </FONT>
+  <TR align=middle>
+    <TD bgColor=#cccccc noWrap>
+      <FORM name=l95b><FONT face="verdana, arial"><FONT color=#010785><B>Lower 
+      limit = </B></FONT><INPUT size=8 value=--------> </FONT>
+    <TD bgColor=#cccccc noWrap></FORM>
+      <FORM name=u95b><FONT face="verdana, arial"><FONT color=#010785><B>Upper 
+      limit = </B></FONT><INPUT size=8 value=--------> 
+</FONT></TR></TBODY></TABLE></FORM><BR><BR><FONT size=-1>References: 
+<BLOCKQUOTE>Newcombe, Robert G. "Two-Sided Confidence Intervals for the Single 
+  Proportion: Comparison of Seven Methods," <I>Statistics in Medicine,</I> 
+  <B>17</B>, 857-872 (1998).<BR><BR>Wilson, E. B. "Probable Inference, the Law 
+  of Succession, and Statistical Inference," <I>Journal of the American 
+  Statistical Association,</I> <B>22</B>, 209-212 (1927).</FONT> </BLOCKQUOTE>
+<HR>
+<BR>
+<TABLE border=1 cellPadding=4 cellSpacing=2>
+  <TBODY>
+  <TR vAlign=top>
+    <TD><FONT face="verdana, arial"><A 
+      href="http://vassun.vassar.edu/~lowry/VassarStats.html" 
+      target=VassarStats><B>Home</B></A> </FONT>
+    <TD><FONT face="verdana, arial">Click this link <B>only</B> if you did not 
+      arrive here via the VassarStats main page. 
+</FONT></TR></TBODY></TABLE><BR><BR><BR><FONT size=-2>©Richard Lowry 
+1998-2000<BR>All rights reserved.</FONT>
+<HR>
+ <BR><BR><BR><BR><BR><BR></FONT></BODY></HTML>

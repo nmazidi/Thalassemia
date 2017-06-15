@@ -1,0 +1,37 @@
+function [misclassify, index, nearestIndex] = looknn(sampledata, k, option)
+%LOOKNN Leave-one-out error (misclassification count) of KNN
+%
+%	Usage:
+%	[MISCLASSIFY, INDEX, NEAREST_SAMPLE_INDEX] = LOOKNN(SAMPLEDATA, K, OPTION)
+%
+%	MISCLASSIFY: No. of misclassification points
+%	INDEX: Index of misclassified points
+%	NEAREST_SAMPLE_INDEX: Nearest sample index of the misclassified points
+%	K: The "k" in k-nearest neighbor rule
+%	SAMPLEDATA: Sample data set, with the last column being
+%		the desired label
+%	OPTION = 0 for small data set (vectorized operation based)
+%	       = 1 for large data set (for-loop based)
+%
+%	Type "looknn" to see a simple example.
+
+%	Roger Jang, 970628, 990613, 011229
+
+if nargin==0, selfdemo; return; end
+if nargin<3,
+	if size(sampledata, 1) <= 1000,
+		option=0;	% Small data set, use vectorized operation
+	else
+		option=1;	% Large data set, use for-loop operation
+	end
+end
+if nargin<2, k=1; end
+
+featureNum = size(sampledata, 2)-1;
+sampleNum = size(sampledata, 1);
+input = sampledata(:, 1:featureNum);
+desired = sampledata(:, featureNum+1);
+classLabel = countele(desired);
+classNum = length(classLabel);
+computed = zeros(size(desired));
+nearestSampleIn

@@ -5,7 +5,7 @@ y(:,1) = rawtraindata{5};
  for n = 1:178
     if y(n,1) ~= 1;
     y(n,1) = 2; 
-    end 
+    end
  end
 for n = 1:4
   X(:,n) = rawtraindata{n};  

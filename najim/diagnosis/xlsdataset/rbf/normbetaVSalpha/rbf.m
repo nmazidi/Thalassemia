@@ -12,7 +12,7 @@ trainY = dataset.realDiagnosis;
 
 spread = 40;
 goal = 0.01;
-MN = 20;
+MN = 40;
 DF = 5;
 
 net = newrb(trainX,trainY,goal,spread,MN,DF);
@@ -23,22 +23,23 @@ best_thr = 0;
 numOfCorrectDiagnoses = 0;
 for n = 1:100
     thr = thr + 0.01;
-    temp = diagnose(a,size(testX,2),thr);
-    num = checkDiagnosis(temp, testY);
+    temp = diagnose(a,size(trainX,2),thr);
+    num = checkDiagnosis(temp, trainY);
     if num > numOfCorrectDiagnoses 
        numOfCorrectDiagnoses = num;
        best_thr = thr;
     end
 end
 display(best_thr);
-display(numOfCorrectDiagnoses);
-diagnosis = diagnose(a,size(testX,2), best_thr);
+accuracy = (numOfCorrectDiagnoses/390)*100;
+display(accuracy);
+diagnosis = diagnose(a,size(trainX,2), best_thr);
 
 thr = 0;
 for d = 1:1000
    thr = thr + 0.01;
-   result = threshold_rbf(a,99,thr);
-   [sen(d),spe(d)] = result_class(result, testY, 99);
+   result = threshold_rbf(a,390,thr);
+   [sen(d),spe(d)] = result_class(result, trainY, 390);
 end
 
 falsePos(1) = 0;
@@ -66,5 +67,5 @@ grid ON;
 roc_result= [spe',sen'];
 save roc_result.dat roc_result -ASCII -TABS;
 
-output_res = [a',diagnosis',testY'];
+output_res = [a',diagnosis',trainY'];
 save rbf_output.dat output_res -ASCII -TABS;

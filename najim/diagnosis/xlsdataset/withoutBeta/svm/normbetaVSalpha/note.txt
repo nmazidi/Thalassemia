@@ -1,0 +1,19 @@
+1.  index
+2.  year of screening
+3.  sex 0 = girl, 1 = boy
+4.  born
+5.  RBC  (milion/mmc)
+6.  Hb  (g%)
+7.  Ht (%)
+8.  MCV (Mean Cellular Volume) (micron^3)
+9.  globuli bianchi (migliaia/mmc)
+10. HbA2 emoglobina A2 (%)
+11. Sideremia fep (%)
+12. G6PD
+13. Piastrine (migliaia/mmc)
+14. Diagnosys :
+	0,1 = normal (1 after molecular  analisys)
+	2   = beta
+	3   = alpha 3.7
+	4   = alpha NCO-I
+	5   = alpha-alpha
